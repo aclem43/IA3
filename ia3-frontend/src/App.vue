@@ -1,11 +1,21 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import { getWebcams } from "./scripts/traffic";
+import { onMounted } from "vue";
+
+onMounted(async () => {
+  console.log(await getWebcams());
+});
+</script>
+
 <template>
   <v-app>
+    <v-app-bar density="compact" rounded>
+      <v-app-bar-title>Application</v-app-bar-title>
+    </v-app-bar>
+
     <v-main>
-      <HelloWorld />
+      <RouterView></RouterView>
     </v-main>
   </v-app>
 </template>
-
-<script setup lang="ts">
-  import HelloWorld from '@/components/HelloWorld.vue'
-</script>
