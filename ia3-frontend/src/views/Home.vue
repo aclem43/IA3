@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import {
+  addFilter,
+  filterData,
+  getFilters,
+  removeFilter,
+  loadFilters,
+  type Filter,
+} from "@/scripts/filters";
 import { getWebcams, type WebCam } from "@/scripts/traffic";
 import { computed } from "vue";
 import { Ref } from "vue";
@@ -9,27 +17,29 @@ const key = ref(0);
 
 const data: Ref<WebCam[]> = ref([]);
 const search: Ref<string> = ref("");
-
-const filter = (item: WebCam, value: string) => {
-  if (item.location.locality.toLowerCase().includes(value.toLowerCase())) {
-    return true;
-  }
-  if (item.description.toLowerCase().includes(value.toLowerCase())) {
-    return true;
-  }
-  if (item.location.postcode.toLowerCase().includes(value.toLowerCase())) {
-    return true;
-  }
-
-  return false;
-};
+const filters = getFilters();
 
 const filteredData: Ref<WebCam[]> = computed(() => {
-  return data.value.filter((item) => filter(item, search.value));
+  console.log(filters.value);
+  return filterData(data.value, filters.value) as WebCam[];
 });
+const add = () => {
+  if (search.value.length > 0) {
+    addFilter({
+      value: search.value,
+      operator: "like",
+      properties: ["location.locality", "description", "location.postcode"],
+    });
+  }
+};
+
+const remove = (filter: Filter) => {
+  removeFilter(filter);
+};
+
 onMounted(async () => {
   data.value = await getWebcams();
-
+  loadFilters();
   setInterval(async () => {
     key.value += 1;
     console.log(key.value);
@@ -51,12 +61,19 @@ onMounted(async () => {
                 variant="solo-filled"
                 label="Search"
               ></v-text-field>
-              <v-btn hide-details size="large">
+              <v-btn hide-details size="large" @click="add">
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
             </div>
             <div class="filter-tags">
-              <v-chip closable>4068</v-chip>
+              <v-chip
+                v-for="(filter, idx) in filters"
+                v-bind:key="idx"
+                @click:close="remove(filter)"
+                closable
+              >
+                {{ filter.value }}</v-chip
+              >
             </div>
           </v-card-item>
         </v-card>
