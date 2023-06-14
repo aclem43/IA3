@@ -1,14 +1,12 @@
 import { ref } from "vue";
 
-const allEvents = ref<trafficeEvent[]>([]);
-
-const getEvents = async () => {
+export const getEvents = async (): Promise<trafficEvent[]> => {
   const response = await fetch("/api/events");
   const data = await response.json();
-  allEvents.value = data;
+  return data;
 };
 
-interface trafficeEvent {
+export interface trafficEvent {
   id: number;
   area_alert: boolean;
   status: string;

@@ -78,7 +78,7 @@ interface trafficeEvent {
   };
   event_priority: string;
   description: string;
-  advice: string;
+  advice: string; 
   information: null;
   road_summary: {
     road_name: string;
