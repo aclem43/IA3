@@ -11,7 +11,7 @@ export interface Filter {
 
 export const filterData = (data: unknown[], filters: Filter[]) => {
   return data.filter((item) => {
-    return filters.every((filter) => {
+    return filters.some((filter) => {
       return filter.properties.some((property) => {
         const value = getProperty(item, property);
         return compare(value, filter.value, filter.operator);
@@ -34,11 +34,11 @@ const getProperty = (item: any, property: string): string => {
 };
 
 const compare = (value: string, filterValue: string, operator: string) => {
+  value = value.toLowerCase();
   switch (operator) {
     case "eq":
       return value === filterValue;
     case "like":
-      console.log(value);
       return value.includes(filterValue);
     case "notlike":
       return !value.includes(filterValue);
