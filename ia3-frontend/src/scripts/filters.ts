@@ -10,6 +10,9 @@ export interface Filter {
 }
 
 export const filterData = (data: unknown[], filters: Filter[]) => {
+  if (filters.length === 0) {
+    return data;
+  }
   return data.filter((item) => {
     return filters.some((filter) => {
       return filter.properties.some((property) => {
