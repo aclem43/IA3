@@ -80,7 +80,7 @@ onMounted(async () => {
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="3" v-for="(item, index) in filteredData" :key="index">
+      <v-col sm="12" md="3" v-for="(item, index) in filteredData" :key="index">
         <v-card>
           <v-img :src="item.image_url" :key="key"></v-img>
           <v-card-title>{{ item.location.locality }}</v-card-title>

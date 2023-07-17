@@ -23,20 +23,30 @@ export const filterData = (data: unknown[], filters: Filter[]) => {
   });
 };
 
-const getProperty = (item: any, property: string): string => {
+export const getProperty = (item: any, property: string): string => {
   const propertyList = property.split(".");
   let value: any;
   for (const prop of propertyList) {
     if (item[prop] == undefined) {
+      if (value == undefined) {
+        return "";
+      }
       value = value[prop];
-    } else {
+    } else if (item[prop] == null) {
+      return "";
+    }
+    {
       value = item[prop];
     }
   }
   return value;
 };
 
-const compare = (value: string, filterValue: string, operator: string) => {
+export const compare = (
+  value: string,
+  filterValue: string,
+  operator: string
+) => {
   value = value.toLowerCase();
   switch (operator) {
     case "eq":

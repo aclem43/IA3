@@ -21,7 +21,7 @@ export interface trafficEvent {
   event_due_to: unknown;
   impact: {
     direction: string;
-    towards: string;
+    towards?: string | null;
     impact_type: string;
     impact_subtype: unknown;
     delay: string;
